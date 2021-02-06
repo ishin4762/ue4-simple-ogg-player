@@ -9,6 +9,7 @@
 USoundNodeOggPlayer::USoundNodeOggPlayer(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	bIsInitialized = false;
 	SoundWaveProcedural = nullptr;
 	BufferSize = 0;
 	CurrentPosition = 0;
@@ -17,6 +18,7 @@ USoundNodeOggPlayer::USoundNodeOggPlayer(const FObjectInitializer& ObjectInitial
 void USoundNodeOggPlayer::Initialize()
 {
 	QualityInfo = { 0 };
+	bIsInitialized = false;
 
 	// Open ogg file
 	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
@@ -45,6 +47,8 @@ void USoundNodeOggPlayer::Initialize()
 		SoundWaveProcedural->ResetAudio();
 		SoundWaveProcedural->OnSoundWaveProceduralUnderflow =
 			FOnSoundWaveProceduralUnderflow::CreateUObject(this, &USoundNodeOggPlayer::GenerateData);
+
+		bIsInitialized = true;
 	}
 	else
 	{
@@ -106,11 +110,18 @@ void USoundNodeOggPlayer::ParseNodes(FAudioDevice* AudioDevice, const UPTRINT No
 		*RequiresInitialization = false;
 	}
 
-	if (!VorbisAudioInfo.IsValid()) {
+	if (!bIsInitialized)
+	{
 		return;
 	}
 
-	if (!SoundWaveProcedural) {
+	if (!VorbisAudioInfo.IsValid())
+	{
+		return;
+	}
+
+	if (!SoundWaveProcedural)
+	{
 		return;
 	}
 

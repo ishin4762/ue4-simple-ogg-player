@@ -39,6 +39,7 @@ private:
 	TArray<uint8> DecodedBuffer;
 	USoundWaveProcedural* SoundWaveProcedural;
 
+	bool bIsInitialized;
 	int32 BufferSize;
 	int64 CurrentPosition;
 
