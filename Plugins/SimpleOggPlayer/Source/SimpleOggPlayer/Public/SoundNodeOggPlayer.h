@@ -17,7 +17,7 @@
  * USoundNodeOggPlayer
  */
 UCLASS(hidecategories = Object, editinlinenew, meta = (DisplayName = "OggPlayer"))
-class USoundNodeOggPlayer : public USoundNode
+class SIMPLEOGGPLAYER_API USoundNodeOggPlayer : public USoundNode
 {
 	GENERATED_UCLASS_BODY()
 
